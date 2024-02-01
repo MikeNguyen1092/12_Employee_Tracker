@@ -1,19 +1,14 @@
 const db = require("./connections");
-const express = require('express');
 
-const PORT = process.env.PORT || 3001;
-const app = express();
+const getEmployee = () => {
+db.query("SELECT e.first_name, e.last_name, r.title, r.salary, d.name department_name, CONCAT(m.first_name, ' ', m.last_name) AS manager FROM employee e INNER JOIN role r ON e.role_id = r.id INNER JOIN department d ON r.department_id = d.id LEFT JOIN employee m ON e.manager_id = m.id;", function (err, results) {
+    if (err) {
+        console.error(err);
+        return;
+    }
 
-// Express middleware
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
-
-db.query("SELECT * FROM employee", function (err, results) {
-	console.table(results);
+    console.table(results);
 });
+}
 
-
-app.listen(PORT, () => {
-	console.log(`Server running on port ${PORT}`);
-  });
-  
+module.exports = {getEmployee};

@@ -1,23 +1,24 @@
-const db = require("./db/connections");
-const express = require('express');
+const {getEmployee} = require("./db/index");
+const inquirer = require("inquirer");
 
-// const PORT = process.env.PORT || 3001;
-// const app = express();
+// let int = async () => {
+// 	try {
+// 		const response = await inquirer.prompt ([
+// 			{
+// 				type: `list`,
+// 				message: `What would you like to do?`,
+// 				choices: [`View All Employees`, `View All Roles`,`View All Departments`, `Add A Department`, `Add A Role`, `Add An Employee`, `Update An Employee Role`],
 
-// // Express middleware
-// app.use(express.urlencoded({ extended: false }));
-// app.use(express.json());
-
-db.query("SELECT employee.first_name, employee.last_name, role.title, role.salary, department.name FROM employee INNER JOIN role ON employee.role_id = role.id INNER JOIN department ON role.department_id = department.id;", function (err, results) {
-    if (err) {
-        console.error(err);
-        return;
-    }
-
-    console.table(results);
-});
+// 			}
+// 		])
+		
+// 	}
+// 	catch (err) {
+// 		console.error(err)
+// 	}
+// }
 
 
-// app.listen(PORT, () => {
-// 	console.log(`Server running on port ${PORT}`);
-//   });
+
+
+getEmployee();
