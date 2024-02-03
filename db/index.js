@@ -40,12 +40,19 @@ const addDepartment = async (department) => {
 	}
 };
 
-const addRole = async (role,id) => {
+const addRole = async (role) => {
 	try {
-		await dataBase(`INSERT INTO role (title, salary, department_id) VALUES ("${role.roleName}", ${role.salary}, ${id})`);
+		await dataBase(`INSERT INTO role (title, salary, department_id) VALUES ("${role.roleName}", ${role.salary}, ${role.deptId})`);
+	} catch (err) {
+		throw err
+	}
+}
+const addEmployee = async (e) => {
+	try {
+		await dataBase(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${e.firstName}", "${e.lastName}", ${e.roleId}, ${e.managerId})`);
 	} catch (err) {
 		throw err
 	}
 }
 
-module.exports = { getAllEmployees, getAllRoles, getAllDepartments, addDepartment, addRole };
+module.exports = { getAllEmployees, getAllRoles, getAllDepartments, addDepartment, addRole, addEmployee };
