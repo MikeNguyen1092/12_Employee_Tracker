@@ -55,4 +55,14 @@ const addEmployee = async (e) => {
 	}
 }
 
-module.exports = { getAllEmployees, getAllRoles, getAllDepartments, addDepartment, addRole, addEmployee };
+const updateEmployee = async (e) => {
+	try {
+		await dataBase(`UPDATE employee SET role_id = ${e.roleId} WHERE id = ${e.employeeId};`);
+	} catch (err) {
+		throw err
+	}
+}
+
+;
+
+module.exports = { getAllEmployees, getAllRoles, getAllDepartments, addDepartment, addRole, addEmployee, updateEmployee };

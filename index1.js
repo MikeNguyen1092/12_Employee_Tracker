@@ -1,4 +1,4 @@
-const { getAllEmployees, getAllRoles, getAllDepartments, addDepartment, addRole, addEmployee } = require("./db/index");
+const { getAllEmployees, getAllRoles, getAllDepartments, addDepartment, addRole, addEmployee, updateEmployee } = require("./db/index");
 const inquirer = require("inquirer");
 
 const init = async () => {
@@ -47,7 +47,7 @@ const init = async () => {
 				break;
 
 			case "Update An Employee Role":
-				await updateEmployee();
+				await updateEmployeeRole();
 				init();
 				break;
 
@@ -83,7 +83,7 @@ const role = async () => {
 		const deptNames = departments.map((dept) => ({
 			name: dept.name,
 			value: dept.id,
-		}))
+		}));
 		const response = await inquirer.prompt([
 			{
 				type: "input",
@@ -104,9 +104,8 @@ const role = async () => {
 			},
 		]);
 		console.log(response);
-			await addRole(response)
-			console.log(response.roleName + " is added to the database");
-
+		await addRole(response);
+		console.log(response.roleName + " is added to the database");
 	} catch (err) {
 		console.error(err);
 	}
@@ -120,12 +119,12 @@ const employee = async () => {
 		const roleNames = roles.map((r) => ({
 			name: r.title,
 			value: r.id,
-		}))
+		}));
 
 		const employeeNames = employees.map((e) => ({
 			name: `${e.first_name} ${e.last_name}`,
 			value: e.id,
-		}))
+		}));
 		employeeNames.unshift({ name: "None", value: null });
 
 		const response = await inquirer.prompt([
@@ -145,21 +144,21 @@ const employee = async () => {
 				name: "roleId",
 				choices: roleNames,
 			},
-		{
-			type: "list",
-			message: "Who is the employee's manager?",
-			name: "managerId",
-			choices: employeeNames,
-		}
+			{
+				type: "list",
+				message: "Who is the employee's manager?",
+				name: "managerId",
+				choices: employeeNames,
+			},
 		]);
 		console.log(response);
-		await addEmployee(response)
+		await addEmployee(response);
 	} catch (err) {
 		console.error(err);
 	}
 };
 
-const updateEmployee = async () => {
+const updateEmployeeRole = async () => {
 	try {
 		const roles = await getAllRoles();
 		const employees = await getAllEmployees();
@@ -167,30 +166,28 @@ const updateEmployee = async () => {
 		const roleNames = roles.map((r) => ({
 			name: r.title,
 			value: r.id,
-		}))
+		}));
 
 		const employeeNames = employees.map((e) => ({
 			name: `${e.first_name} ${e.last_name}`,
 			value: e.id,
-		}))
+		}));
 
 		const response = await inquirer.prompt([
 			{
 				type: "list",
 				message: "Which employee's role do you want to update?",
 				choices: employeeNames,
-				name: "employeeId"
+				name: "employeeId",
 			},
 			{
 				type: "list",
 				message: "Which role do you want to assign the selected employee?",
 				choices: roleNames,
-				name: "roleId"
+				name: "roleId",
 			},
-			
 		]);
-		console.log(response);
-		await addEmployee(response)
+		await updateEmployee(response);
 	} catch (err) {
 		console.error(err);
 	}
